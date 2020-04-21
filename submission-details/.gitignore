@@ -1,0 +1,11 @@
+# Ignore everything in this directory
+*
+# Except...
+!author
+!AUTHOR
+!custom
+!CUSTOM
+!mlfq
+!MLFQ
+!time-spent
+!TIME-SPENT

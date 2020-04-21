@@ -1,0 +1,259 @@
+#!/usr/bin/env racket
+#lang racket/base
+
+(require racket/file
+         racket/list
+         racket/match
+         racket/port
+         racket/random
+         racket/string)
+
+(define git-path (find-executable-path "git"))
+
+(struct git-error exn:fail:user ())
+
+(define (run-git #:show [show #f] . args)
+  (define argv (list* "--no-pager" args))
+  (when show
+    (printf "\e[1;34m[INFO] Running \"git ~A\"...\e[0m~%"
+            (string-join argv " ")))
+  (define-values (proc proc-output proc-input proc-error)
+    (apply subprocess #f #f #f git-path argv))
+  (close-output-port proc-input)
+  (subprocess-wait proc)
+  (define output (port->bytes proc-output))
+  (close-input-port proc-output)
+  (define error-string (port->string proc-error))
+  (close-input-port proc-error)
+  (when (not (eqv? (subprocess-status proc) 0))
+    (raise (git-error error-string (current-continuation-marks))))
+  output)
+
+(define (call-with-temporary-directory proc)
+  (define dirname
+    (build-path
+     (find-system-path 'temp-dir)
+     (list->string (for/list ([b (in-bytes (crypto-random-bytes 14))])
+                     (integer->char
+                      (+ (char->integer #\A)
+                         (floor (* 26 (/ b 256)))))))))
+  (make-directory* dirname)
+  (file-or-directory-permissions dirname #o700)
+  (proc dirname)
+  (delete-directory/files dirname))
+
+(struct presubmit-check
+  (name func [has-been-run #:auto #:mutable]))
+
+(struct presubmit-fatal exn:fail:user ())
+
+(define (presubmit-warning msg)
+  (define output
+    (format "~%\e[1;31;7mWARNING:\e[0m ~A~%~%\e[34mDo you wish to continue anyway [y/N]?\e[0m "
+            msg))
+  (display output)
+  (define input (read-line))
+  (for ([c (in-string output)])
+    (when (char=? c #\newline)
+      (display "\e[2K\e[1A")))
+  (display "\e[2K\e[1A")
+  (match input
+    [(? eof-object?) (raise (presubmit-fatal "EOF encountered during prompt."
+                                             (current-continuation-marks)))]
+    [(or "y" "Y" "yes" "Yes" "YES") (void)]
+    [_ (raise (presubmit-fatal "Operation aborted by user."
+                                (current-continuation-marks)))]))
+
+(define in-git-repo-check
+  (presubmit-check
+   "InGitRepo"
+   (λ ()
+     (define in-git-repo
+       (with-handlers ([git-error? (λ (e) #f)])
+         (define output (run-git "rev-parse" "--is-inside-work-tree"))
+         (bytes=? output #"true\n")))
+     (when (not in-git-repo)
+       (raise (presubmit-fatal "You aren't in a git repository!"
+                               (current-continuation-marks)))))))
+
+(define is-alamode-check
+  (presubmit-check
+   "RunningOnAlamode"
+   (λ ()
+     (define hostname
+       (with-handlers ([exn:fail:filesystem? (λ (e) #"")])
+         (call-with-input-file "/etc/hostname" port->bytes)))
+     (unless (or (< (bytes-length hostname) 5)
+                 (bytes=? #"bb136" (subbytes hostname 0 5)))
+       (presubmit-warning "You are not running this script on one of the ALAMODE machines.
+
+Please be sure that your code compiles and runs properly on one of the ALAMODE machines.")))))
+
+(define untracked-files-check
+  (presubmit-check
+   "UntrackedFiles"
+   (λ ()
+     (define files
+       (string-split (bytes->string/utf-8
+                      (run-git "ls-files" "-z" "-o" "--exclude-standard"))
+                     "\0"))
+     (unless (empty? files)
+       (presubmit-warning (format "You have untracked files:~%~%~A
+
+These files will not be included in your submission unless you commit them."
+                                  (string-join files "\n")))))))
+
+(define uncommitted-files-check
+  (presubmit-check
+   "UncommittedFiles"
+   (λ ()
+     (define files
+       (string-split (bytes->string/utf-8
+                      (run-git "diff" "-z" "--name-only" "HEAD"))
+                     "\0"))
+     (unless (empty? files)
+       (presubmit-warning (format "You have uncommitted changes:~%~%~A
+
+These changes to tracked files will not be included in your submission unless
+you commit them."
+                                  (string-join files "\n")))))))
+
+(define author-file-check
+  (presubmit-check
+   "AuthorFile"
+   (λ ()
+     (define author-file-content
+       (with-handlers
+         ([git-error? (λ (e)
+                        (presubmit-warning "You don't have an author file committed to your repository.
+
+Please read the project requirements for further information.")
+                        (void))])
+         (bytes->string/utf-8 (run-git "show" "--format=raw" "HEAD:submission-details/author"))))
+     (when (void? author-file-content)
+        (presubmit-warning "No author file present.")))))
+
+(define time-spent-file-check
+  (presubmit-check
+   "TimeSpentFile"
+   (λ ()
+     (define time-spent-file-content
+       (with-handlers
+         ([git-error? (λ (e)
+                        (presubmit-warning "You don't have a time-spent file committed to your repository.
+
+Please read the project requirements for further information.")
+                        (void))])
+         (bytes->string/utf-8 (run-git "show" "--format=raw" "HEAD:submission-details/time-spent"))))
+     (when (void? time-spent-file-content)
+       (presubmit-warning "No time-spent file present.")))))
+
+(define code-compiles-check
+  (presubmit-check
+   "CodeCompiles"
+   (λ ()
+     (define git-dir-with-newline (run-git "rev-parse" "--git-dir"))
+     (define git-dir (subbytes git-dir-with-newline
+                               0 (sub1 (bytes-length git-dir-with-newline))))
+     (call-with-temporary-directory
+      (λ (dir)
+        (run-git "clone" git-dir dir)
+        (parameterize ([current-directory dir])
+          (call-with-output-file "/dev/null"
+            (λ (output-file)
+              (define-values (proc proc-output proc-input proc-error)
+                (subprocess output-file #f output-file
+                            (find-executable-path "make")))
+              (close-output-port proc-input)
+              (subprocess-wait proc)
+              (unless (eqv? (subprocess-status proc) 0)
+                (presubmit-warning "Your code does not compile successfully.")))
+            #:exists 'truncate)))))))
+
+(define base-checks (list in-git-repo-check
+                          is-alamode-check
+                          untracked-files-check
+                          uncommitted-files-check
+                          author-file-check
+                          time-spent-file-check
+                          code-compiles-check))
+
+(define (run-presubmit-checks checks)
+  (let* ([checks (filter-not presubmit-check-has-been-run checks)]
+         [total-checks (length checks)])
+    (for ([check (in-list checks)]
+          [checknum (in-naturals 1)])
+      (printf "\e[2K\r[~A/~A] Running ~A check..."
+              checknum total-checks (presubmit-check-name check))
+      (flush-output)
+      (with-handlers
+        ([presubmit-fatal?
+          (λ (e)
+            (printf "\e[2K\r\e[1;31m[ERROR] ~A check failed: ~A\e[0m~%"
+                    (presubmit-check-name check) (exn-message e))
+            (exit 1))])
+        ((presubmit-check-func check))))
+    (display "\e[2K\r")))
+
+(struct deliverable (name git-tag presubmit-checks))
+
+(define project-deliverables
+  (vector (deliverable "Project 3 Finished" "p3-finished" '())))
+
+(define (prompt-deliverable deliverables)
+  (define current-tags
+    (string-split (bytes->string/utf-8 (run-git "tag" "--list")) "\n"))
+  (define prompt-output
+    (format "\e[2K\rChoose the deliverable you are submitting:~%~%~A~%Input a number [1-~A]: "
+            (string-join
+             (for/list ([deliv (in-vector deliverables)]
+                        [i (in-naturals 1)])
+               (format "  ~A. ~A~A~%"
+                       i (deliverable-name deliv)
+                       (if (member (deliverable-git-tag deliv) current-tags)
+                           " (already submitted)"
+                           "")))
+             "")
+            (vector-length deliverables)))
+  (display prompt-output)
+  (define choice (read-line))
+
+  (for ([c (in-string prompt-output)])
+    (when (char=? c #\newline)
+      (display "\e[2K\e[1A")))
+  (display "\e[2K\e[1A\r")
+
+  (when (eof-object? choice)
+    (displayln "\e[1;31m[ERROR] EOF encountered when prompting deliverable.\e[0m")
+    (exit 1))
+
+  (match (string->number choice)
+    [(and (? exact-positive-integer? n)
+          (? (λ (n) (<= n (vector-length deliverables)))))
+     (let ([deliv (vector-ref deliverables (sub1 n))])
+       (values deliv (member (deliverable-git-tag deliv) current-tags)))]
+    [_ (displayln "\e[1;31m[ERROR] Input not valid.\e[0m")
+       (prompt-deliverable deliverables)]))
+
+(define (submit-my-work)
+  (run-presubmit-checks base-checks)
+  (define-values (deliv resubmission)
+    (prompt-deliverable project-deliverables))
+  (run-presubmit-checks (deliverable-presubmit-checks deliv))
+  (when resubmission
+    (displayln "\e[1;34m[INFO] This is a resubmission and will require a force push.
+The grader has no obligation to use your new submission if
+they have already cloned your repo, so please try and submit
+only once next time ;)\e[0m")
+    (run-git "tag" "-d" (deliverable-git-tag deliv) #:show #t))
+  (run-git "tag" (deliverable-git-tag deliv) #:show #t)
+  (define push-args
+    (if resubmission
+        '("--tags" "--force")
+        '("--tags")))
+  (apply run-git "push" push-args #:show #t)
+  (printf "\e[1;34m[INFO] Your work for \"~A\" has been submitted!\e[0m~%"
+          (deliverable-name deliv)))
+
+(module+ main
+  (void (submit-my-work)))
