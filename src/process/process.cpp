@@ -33,20 +33,23 @@ size_t Process::size() const
 
 bool Process::is_valid_page(size_t index) const
 {
-    // TODO
+    if(index >= 0 && index < page_table.rows.size()){
+        return true;
+    }
     return false;
 }
 
 
 size_t Process::get_rss() const
 {
-    // TODO
-    return 0;
+    return page_table.get_present_page_count();
 }
 
 
 double Process::get_fault_percent() const
 {
-    // TODO
+    if(memory_accesses != 0){
+        return ((double)page_faults / (double)memory_accesses) * 100.0;
+    }
     return 0.0;
 }

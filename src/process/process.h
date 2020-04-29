@@ -33,7 +33,7 @@ public:
     bool is_valid_page(size_t index) const;
 
     /**
-    * Returns the resident set size of this process.
+    * Returns the resident set size of this process. (amout of main memory used by process)
     */
     size_t get_rss() const;
 
