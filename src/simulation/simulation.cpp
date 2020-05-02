@@ -6,6 +6,7 @@
  */
 
 #include "simulation/simulation.h"
+#include "flag_parser/flag_parser.h"
 #include <stdexcept>
 
 Simulation::Simulation(FlagOptions& flags)
@@ -16,8 +17,14 @@ Simulation::Simulation(FlagOptions& flags)
 }
 
 void Simulation::run() {
+    //initialize free frames
+    for(int i = 0; i < 512; i++){
+        free_frames.push_back(i);
+    }
+    //access memory
     for (auto virtual_address : this->virtual_addresses) {
         this->perform_memory_access(virtual_address);
+        this->time++; //increment time
     }
 
     this->print_summary();
@@ -27,14 +34,78 @@ char Simulation::perform_memory_access(const VirtualAddress& virtual_address) {
     if (this->flags.verbose) {
         std::cout << virtual_address << std::endl;
     }
+    Process* proc = processes[virtual_address.process_id]; //get the corresponding process
+    proc->memory_accesses++;
+    //check if the process will segault
+    if(!proc->is_valid_page(virtual_address.page)){
+        //page segfault
+        exit(1);
+    }
+    //other kind of segault goes here, not sure how to implement it
 
-    // TODO
-
+    //check if the referenced page is already in memory
+    if(proc->page_table.rows[virtual_address.page].present){
+        //is in memory
+        if(this->flags.verbose){
+            std::cout << "\t-> IN MEMORY" << std::endl;
+        }
+        proc->page_table.rows[virtual_address.page].last_accessed_at = time;
+        //do nothing else?
+    }
+    else{
+        handle_page_fault(proc, virtual_address.page); //not in memory, handle page fault
+    }
+    
+    //create physical address and print out physical address
+    PhysicalAddress p(proc->page_table.rows[virtual_address.page].frame, virtual_address.offset);
+    if(this->flags.verbose){
+        std::cout << "\t-> physical address " << p << std::endl;
+        std::cout << "\t-> RSS: " << proc->get_rss() << std::endl << std::endl;
+    }
     return 0;
 }
 
+//when page is not in main memory
 void Simulation::handle_page_fault(Process* process, size_t page) {
-    // TODO: implement me
+    page_faults++;
+    process->page_faults++;
+    if(this->flags.verbose){
+        std::cout << "\t-> PAGE FAULT" << std::endl;
+    }
+    //give that page the first unused frame (if it exists)
+    if(process->get_rss() < this->flags.max_frames){
+        //give it first free frame
+        int frame_index = free_frames.front();
+        free_frames.remove(frame_index); //remove; is no longer free
+        Frame f;
+        f.set_page(process, page);
+        frames.push_back(f); 
+        process->page_table.rows[page].frame = frame_index;
+        process->page_table.rows[page].present = true;
+        process->page_table.rows[page].loaded_at = time;
+        return;
+    }
+    //process has used all of its allowed frames
+    //put the page in memory, handle differently based on FIFO/LRU
+    if(this->flags.strategy == ReplacementStrategy::FIFO){
+        //pages removed in round robin style
+        //page that has been in memory the longest is replaced
+
+        int page_index = process->page_table.get_oldest_page();
+        process->page_table.rows[page_index].present = false;
+        int frame_index = process->page_table.rows[page_index].frame;
+        Frame f;
+        f.set_page(process, page);
+        frames.push_back(f);
+        process->page_table.rows[page].frame = frame_index;
+        process->page_table.rows[page].present = true;
+        process->page_table.rows[page].loaded_at = time;
+    }
+    else{ //LRU strategy
+        //replace the page that has not been referenced for the longest time
+        int page_index = process->page_table.get_least_recently_used_page();
+    }
+
 }
 
 void Simulation::print_summary() {

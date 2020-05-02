@@ -26,7 +26,6 @@ Process* Process::read_from_input(std::istream& in) {
 
 size_t Process::size() const
 {
-    // TODO
     return this->num_bytes;
 }
 
