@@ -1,0 +1,536 @@
+38c38
+< 	-> physical address 0000000000101101 [frame: 0; offset: 45]
+---
+>     -> physical address 0000000001101101 [frame: 1; offset: 45]
+53c53
+< 	-> physical address 0000000010000011 [frame: 2; offset: 3]
+---
+>     -> physical address 0000000011000011 [frame: 3; offset: 3]
+58c58
+< 	-> physical address 0000000000101000 [frame: 0; offset: 40]
+---
+>     -> physical address 0000000100101000 [frame: 4; offset: 40]
+63c63
+< 	-> physical address 0000000010111000 [frame: 2; offset: 56]
+---
+>     -> physical address 0000000001111000 [frame: 1; offset: 56]
+67,68c67,68
+< 	-> PAGE FAULT
+< 	-> physical address 0000000000000111 [frame: 0; offset: 7]
+---
+>     -> IN MEMORY
+>     -> physical address 0000000010000111 [frame: 2; offset: 7]
+73c73
+< 	-> physical address 0000000010110010 [frame: 2; offset: 50]
+---
+>     -> physical address 0000000000110010 [frame: 0; offset: 50]
+78c78
+< 	-> physical address 0000000000101111 [frame: 0; offset: 47]
+---
+>     -> physical address 0000000011101111 [frame: 3; offset: 47]
+83c83
+< 	-> physical address 0000000010101101 [frame: 2; offset: 45]
+---
+>     -> physical address 0000000100101101 [frame: 4; offset: 45]
+88c88
+< 	-> physical address 0000000010101101 [frame: 2; offset: 45]
+---
+>     -> physical address 0000000100101101 [frame: 4; offset: 45]
+93c93
+< 	-> physical address 0000000000101111 [frame: 0; offset: 47]
+---
+>     -> physical address 0000000011101111 [frame: 3; offset: 47]
+97,98c97,98
+< 	-> IN MEMORY
+< 	-> physical address 0000000011111001 [frame: 3; offset: 57]
+---
+>     -> PAGE FAULT
+>     -> physical address 0000000001111001 [frame: 1; offset: 57]
+102c102
+< 	-> PAGE FAULT
+---
+>     -> IN MEMORY
+113c113
+< 	-> physical address 0000000011110111 [frame: 3; offset: 55]
+---
+>     -> physical address 0000000100110111 [frame: 4; offset: 55]
+123c123
+< 	-> physical address 0000000000000100 [frame: 0; offset: 4]
+---
+>     -> physical address 0000000011000100 [frame: 3; offset: 4]
+128c128
+< 	-> physical address 0000000011010010 [frame: 3; offset: 18]
+---
+>     -> physical address 0000000001010010 [frame: 1; offset: 18]
+133c133
+< 	-> physical address 0000000011010010 [frame: 3; offset: 18]
+---
+>     -> physical address 0000000001010010 [frame: 1; offset: 18]
+138c138
+< 	-> physical address 0000000000000100 [frame: 0; offset: 4]
+---
+>     -> physical address 0000000011000100 [frame: 3; offset: 4]
+143c143
+< 	-> physical address 0000000010111101 [frame: 2; offset: 61]
+---
+>     -> physical address 0000000000111101 [frame: 0; offset: 61]
+148c148
+< 	-> physical address 0000000011001111 [frame: 3; offset: 15]
+---
+>     -> physical address 0000000100001111 [frame: 4; offset: 15]
+178,179c178,179
+< 	-> physical address 0000000000101000 [frame: 0; offset: 40]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000101101000 [frame: 5; offset: 40]
+>     -> RSS: 5     
+183,184c183,184
+< 	-> physical address 0000000000000001 [frame: 0; offset: 1]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000110000001 [frame: 6; offset: 1]
+>     -> RSS: 5     
+188,189c188,189
+< 	-> physical address 0000000000001110 [frame: 0; offset: 14]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000111001110 [frame: 7; offset: 14]
+>     -> RSS: 5     
+193,194c193,194
+< 	-> physical address 0000000000000110 [frame: 0; offset: 6]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001000000110 [frame: 8; offset: 6]
+>     -> RSS: 5     
+198,199c198,199
+< 	-> physical address 0000000000111010 [frame: 0; offset: 58]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001001111010 [frame: 9; offset: 58]
+>     -> RSS: 5     
+203,204c203,204
+< 	-> physical address 0000000000010101 [frame: 0; offset: 21]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000101010101 [frame: 5; offset: 21]
+>     -> RSS: 5     
+208,209c208,209
+< 	-> physical address 0000000000101101 [frame: 0; offset: 45]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000110101101 [frame: 6; offset: 45]
+>     -> RSS: 5     
+213,214c213,214
+< 	-> physical address 0000000000110011 [frame: 0; offset: 51]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000111110011 [frame: 7; offset: 51]
+>     -> RSS: 5     
+217,219c217,219
+< 	-> PAGE FAULT
+< 	-> physical address 0000000000101110 [frame: 0; offset: 46]
+< 	-> RSS: 6
+---
+>     -> IN MEMORY
+>     -> physical address 0000000110101110 [frame: 6; offset: 46]
+>     -> RSS: 5     
+223,224c223,224
+< 	-> physical address 0000000000101100 [frame: 0; offset: 44]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001000101100 [frame: 8; offset: 44]
+>     -> RSS: 5     
+228,229c228,229
+< 	-> physical address 0000000000000001 [frame: 0; offset: 1]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001001000001 [frame: 9; offset: 1]
+>     -> RSS: 5     
+233,234c233,234
+< 	-> physical address 0000000000110111 [frame: 0; offset: 55]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000101110111 [frame: 5; offset: 55]
+>     -> RSS: 5     
+238,239c238,239
+< 	-> physical address 0000000000011010 [frame: 0; offset: 26]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000111011010 [frame: 7; offset: 26]
+>     -> RSS: 5     
+243,244c243,244
+< 	-> physical address 0000000000010011 [frame: 0; offset: 19]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000110010011 [frame: 6; offset: 19]
+>     -> RSS: 5     
+248,249c248,249
+< 	-> physical address 0000000000100010 [frame: 0; offset: 34]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001000100010 [frame: 8; offset: 34]
+>     -> RSS: 5     
+253,254c253,254
+< 	-> physical address 0000000000100010 [frame: 0; offset: 34]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001001100010 [frame: 9; offset: 34]
+>     -> RSS: 5     
+258,259c258,259
+< 	-> physical address 0000000000011010 [frame: 0; offset: 26]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000101011010 [frame: 5; offset: 26]
+>     -> RSS: 5     
+263,264c263,264
+< 	-> physical address 0000000000100001 [frame: 0; offset: 33]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000111100001 [frame: 7; offset: 33]
+>     -> RSS: 5     
+268,269c268,269
+< 	-> physical address 0000000000100001 [frame: 0; offset: 33]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000110100001 [frame: 6; offset: 33]
+>     -> RSS: 5     
+273,274c273,274
+< 	-> physical address 0000000000110000 [frame: 0; offset: 48]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001000110000 [frame: 8; offset: 48]
+>     -> RSS: 5     
+278,279c278,279
+< 	-> physical address 0000000000010110 [frame: 0; offset: 22]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001001010110 [frame: 9; offset: 22]
+>     -> RSS: 5     
+283,284c283,284
+< 	-> physical address 0000000000101000 [frame: 0; offset: 40]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000101101000 [frame: 5; offset: 40]
+>     -> RSS: 5     
+288,289c288,289
+< 	-> physical address 0000000000100000 [frame: 0; offset: 32]
+< 	-> RSS: 6
+---
+>     -> physical address 0000000111100000 [frame: 7; offset: 32]
+>     -> RSS: 5     
+292,294c292,294
+< 	-> IN MEMORY
+< 	-> physical address 0000001001111011 [frame: 9; offset: 59]
+< 	-> RSS: 6
+---
+>     -> PAGE FAULT
+>     -> physical address 0000000110111011 [frame: 6; offset: 59]
+>     -> RSS: 5     
+298,299c298,299
+< 	-> physical address 0000000000101000 [frame: 0; offset: 40]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001000101000 [frame: 8; offset: 40]
+>     -> RSS: 5     
+304c304
+< 	-> RSS: 6
+---
+>     -> RSS: 5     
+333,334c333,334
+< 	-> physical address 0000000000110000 [frame: 0; offset: 48]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010110000 [frame: 10; offset: 48]
+>     -> RSS: 5     
+338,339c338,339
+< 	-> physical address 0000000000101111 [frame: 0; offset: 47]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011101111 [frame: 11; offset: 47]
+>     -> RSS: 5     
+343,344c343,344
+< 	-> physical address 0000000000101011 [frame: 0; offset: 43]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100101011 [frame: 12; offset: 43]
+>     -> RSS: 5     
+348,349c348,349
+< 	-> physical address 0000000000000010 [frame: 0; offset: 2]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101000010 [frame: 13; offset: 2]
+>     -> RSS: 5     
+353,354c353,354
+< 	-> physical address 0000000000100101 [frame: 0; offset: 37]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110100101 [frame: 14; offset: 37]
+>     -> RSS: 5     
+358,359c358,359
+< 	-> physical address 0000000000000100 [frame: 0; offset: 4]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010000100 [frame: 10; offset: 4]
+>     -> RSS: 5     
+363,364c363,364
+< 	-> physical address 0000000000000000 [frame: 0; offset: 0]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011000000 [frame: 11; offset: 0]
+>     -> RSS: 5     
+368,369c368,369
+< 	-> physical address 0000000000001100 [frame: 0; offset: 12]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100001100 [frame: 12; offset: 12]
+>     -> RSS: 5     
+373,374c373,374
+< 	-> physical address 0000000000001101 [frame: 0; offset: 13]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101001101 [frame: 13; offset: 13]
+>     -> RSS: 5     
+378,379c378,379
+< 	-> physical address 0000000000011001 [frame: 0; offset: 25]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110011001 [frame: 14; offset: 25]
+>     -> RSS: 5     
+383,384c383,384
+< 	-> physical address 0000000000100100 [frame: 0; offset: 36]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010100100 [frame: 10; offset: 36]
+>     -> RSS: 5     
+388,389c388,389
+< 	-> physical address 0000000000100100 [frame: 0; offset: 36]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011100100 [frame: 11; offset: 36]
+>     -> RSS: 5     
+393,394c393,394
+< 	-> physical address 0000000000111100 [frame: 0; offset: 60]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100111100 [frame: 12; offset: 60]
+>     -> RSS: 5     
+398,399c398,399
+< 	-> physical address 0000000000101110 [frame: 0; offset: 46]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101101110 [frame: 13; offset: 46]
+>     -> RSS: 5     
+403,404c403,404
+< 	-> physical address 0000000000001101 [frame: 0; offset: 13]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110001101 [frame: 14; offset: 13]
+>     -> RSS: 5     
+408,409c408,409
+< 	-> physical address 0000000000101111 [frame: 0; offset: 47]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010101111 [frame: 10; offset: 47]
+>     -> RSS: 5     
+413,414c413,414
+< 	-> physical address 0000000000101001 [frame: 0; offset: 41]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011101001 [frame: 11; offset: 41]
+>     -> RSS: 5     
+418,419c418,419
+< 	-> physical address 0000000000010110 [frame: 0; offset: 22]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100010110 [frame: 12; offset: 22]
+>     -> RSS: 5     
+423,424c423,424
+< 	-> physical address 0000000000000011 [frame: 0; offset: 3]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101000011 [frame: 13; offset: 3]
+>     -> RSS: 5     
+428,429c428,429
+< 	-> physical address 0000000000110000 [frame: 0; offset: 48]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110110000 [frame: 14; offset: 48]
+>     -> RSS: 5     
+433,434c433,434
+< 	-> physical address 0000000000101001 [frame: 0; offset: 41]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010101001 [frame: 10; offset: 41]
+>     -> RSS: 5     
+438,439c438,439
+< 	-> physical address 0000000000011001 [frame: 0; offset: 25]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011011001 [frame: 11; offset: 25]
+>     -> RSS: 5     
+443,444c443,444
+< 	-> physical address 0000000000001100 [frame: 0; offset: 12]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100001100 [frame: 12; offset: 12]
+>     -> RSS: 5     
+448,449c448,449
+< 	-> physical address 0000000000001011 [frame: 0; offset: 11]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101001011 [frame: 13; offset: 11]
+>     -> RSS: 5     
+453,454c453,454
+< 	-> physical address 0000000000100110 [frame: 0; offset: 38]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110100110 [frame: 14; offset: 38]
+>     -> RSS: 5     
+458,459c458,459
+< 	-> physical address 0000000000110100 [frame: 0; offset: 52]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010110100 [frame: 10; offset: 52]
+>     -> RSS: 5     
+463,464c463,464
+< 	-> physical address 0000000000000001 [frame: 0; offset: 1]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011000001 [frame: 11; offset: 1]
+>     -> RSS: 5     
+468,469c468,469
+< 	-> physical address 0000000000111100 [frame: 0; offset: 60]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100111100 [frame: 12; offset: 60]
+>     -> RSS: 5     
+473,474c473,474
+< 	-> physical address 0000000000110001 [frame: 0; offset: 49]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101110001 [frame: 13; offset: 49]
+>     -> RSS: 5     
+478,479c478,479
+< 	-> physical address 0000000000001010 [frame: 0; offset: 10]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110001010 [frame: 14; offset: 10]
+>     -> RSS: 5     
+483,484c483,484
+< 	-> physical address 0000000000100100 [frame: 0; offset: 36]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010100100 [frame: 10; offset: 36]
+>     -> RSS: 5     
+488,489c488,489
+< 	-> physical address 0000000000011001 [frame: 0; offset: 25]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011011001 [frame: 11; offset: 25]
+>     -> RSS: 5     
+493,494c493,494
+< 	-> physical address 0000000000010111 [frame: 0; offset: 23]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100010111 [frame: 12; offset: 23]
+>     -> RSS: 5     
+498,499c498,499
+< 	-> physical address 0000000000110110 [frame: 0; offset: 54]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101110110 [frame: 13; offset: 54]
+>     -> RSS: 5     
+503,504c503,504
+< 	-> physical address 0000000000100010 [frame: 0; offset: 34]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110100010 [frame: 14; offset: 34]
+>     -> RSS: 5     
+508,509c508,509
+< 	-> physical address 0000000000011010 [frame: 0; offset: 26]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010011010 [frame: 10; offset: 26]
+>     -> RSS: 5     
+513,514c513,514
+< 	-> physical address 0000000000011011 [frame: 0; offset: 27]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011011011 [frame: 11; offset: 27]
+>     -> RSS: 5     
+518,519c518,519
+< 	-> physical address 0000000000000010 [frame: 0; offset: 2]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100000010 [frame: 12; offset: 2]
+>     -> RSS: 5     
+523,524c523,524
+< 	-> physical address 0000000000101110 [frame: 0; offset: 46]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101101110 [frame: 13; offset: 46]
+>     -> RSS: 5     
+528,529c528,529
+< 	-> physical address 0000000000001000 [frame: 0; offset: 8]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110001000 [frame: 14; offset: 8]
+>     -> RSS: 5     
+533,534c533,534
+< 	-> physical address 0000000000111100 [frame: 0; offset: 60]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010111100 [frame: 10; offset: 60]
+>     -> RSS: 5     
+538,539c538,539
+< 	-> physical address 0000000000100010 [frame: 0; offset: 34]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011100010 [frame: 11; offset: 34]
+>     -> RSS: 5     
+543,544c543,544
+< 	-> physical address 0000000000111010 [frame: 0; offset: 58]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001100111010 [frame: 12; offset: 58]
+>     -> RSS: 5     
+548,549c548,549
+< 	-> physical address 0000000000100101 [frame: 0; offset: 37]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001101100101 [frame: 13; offset: 37]
+>     -> RSS: 5     
+553,554c553,554
+< 	-> physical address 0000000000011100 [frame: 0; offset: 28]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001110011100 [frame: 14; offset: 28]
+>     -> RSS: 5     
+558,559c558,559
+< 	-> physical address 0000000000111011 [frame: 0; offset: 59]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001010111011 [frame: 10; offset: 59]
+>     -> RSS: 5     
+563,564c563,564
+< 	-> physical address 0000000000001101 [frame: 0; offset: 13]
+< 	-> RSS: 6
+---
+>     -> physical address 0000001011001101 [frame: 11; offset: 13]
+>     -> RSS: 5     
+567,569c567,569
+< 	-> IN MEMORY
+< 	-> physical address 0000001011100001 [frame: 11; offset: 33]
+< 	-> RSS: 6
+---
+>     -> PAGE FAULT
+>     -> physical address 0000001100100001 [frame: 12; offset: 33]
+>     -> RSS: 5     
+571,573c571,573
+< Process  10:  ACCESSES: 30     FAULTS: 21     FAULT RATE: 70.00    RSS: 5     
+< Process  42:  ACCESSES: 31     FAULTS: 30     FAULT RATE: 96.77    RSS: 6     
+< Process  99:  ACCESSES: 53     FAULTS: 52     FAULT RATE: 98.11    RSS: 6     
+---
+> Process  10:  ACCESSES: 30     FAULTS: 20     FAULT RATE: 66.67    RSS: 5     
+> Process  42:  ACCESSES: 31     FAULTS: 30     FAULT RATE: 96.77    RSS: 5     
+> Process  99:  ACCESSES: 53     FAULTS: 53     FAULT RATE: 100.00   RSS: 5     

@@ -36,12 +36,12 @@ char Simulation::perform_memory_access(const VirtualAddress& virtual_address) {
     }
     Process* proc = processes[virtual_address.process_id]; //get the corresponding process
     proc->memory_accesses++;
-    //check if the process will segault
+    //check if the process page will cause segault
     if(!proc->is_valid_page(virtual_address.page)){
         //page segfault
-        exit(1);
+        std::cout << "SEGFAULT - INVALID PAGE" << std::endl;
+        exit(0);
     }
-    //other kind of segault goes here, not sure how to implement it
 
     //check if the referenced page is already in memory
     if(proc->page_table.rows[virtual_address.page].present){
@@ -60,6 +60,11 @@ char Simulation::perform_memory_access(const VirtualAddress& virtual_address) {
     PhysicalAddress p(proc->page_table.rows[virtual_address.page].frame, virtual_address.offset);
     if(this->flags.verbose){
         std::cout << "\t-> physical address " << p << std::endl;
+        //check for offset segfault
+        if(!proc->pages[virtual_address.page]->is_valid_offset(virtual_address.offset)){
+            std::cout << "SEGFAULT - INVALID OFFSET" << std::endl;
+            exit(0);
+        }
         std::cout << "\t-> RSS: " << proc->get_rss() << std::endl << std::endl;
     }
     return 0;
@@ -83,6 +88,7 @@ void Simulation::handle_page_fault(Process* process, size_t page) {
         process->page_table.rows[page].frame = frame_index;
         process->page_table.rows[page].present = true;
         process->page_table.rows[page].loaded_at = time;
+        process->page_table.rows[page].last_accessed_at = time;
         return;
     }
     //process has used all of its allowed frames
@@ -100,10 +106,20 @@ void Simulation::handle_page_fault(Process* process, size_t page) {
         process->page_table.rows[page].frame = frame_index;
         process->page_table.rows[page].present = true;
         process->page_table.rows[page].loaded_at = time;
+        process->page_table.rows[page].last_accessed_at = time;
     }
     else{ //LRU strategy
         //replace the page that has not been referenced for the longest time
         int page_index = process->page_table.get_least_recently_used_page();
+        process->page_table.rows[page_index].present = false;
+        int frame_index = process->page_table.rows[page_index].frame;
+        Frame f;
+        f.set_page(process, page);
+        frames.push_back(f);
+        process->page_table.rows[page].frame = frame_index;
+        process->page_table.rows[page].present = true;
+        process->page_table.rows[page].loaded_at = time;
+        process->page_table.rows[page].last_accessed_at = time;
     }
 
 }
